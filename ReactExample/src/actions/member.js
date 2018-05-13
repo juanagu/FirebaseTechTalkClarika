@@ -31,11 +31,11 @@ export function signUp(formData) {
       .then((res) => {
         // Send user details to Firebase database
         if (res && res.uid) {
-          FirebaseRef.child(`users/${res.uid}`).set({
+          FirebaseRef.doc(`users/${res.uid}`).set({
             firstName,
             lastName,
-            signedUp: Firebase.database.ServerValue.TIMESTAMP,
-            lastLoggedIn: Firebase.database.ServerValue.TIMESTAMP,
+            //signedUp: firebase.firestore.FieldValue.serverTimestamp(),
+            //lastLoggedIn: firebase.firestore.FieldValue.serverTimestamp(),
           }).then(() => statusMessage(dispatch, 'loading', false).then(resolve));
         }
       }).catch(reject);
@@ -56,7 +56,7 @@ function getUserData(dispatch) {
 
   if (!UID) return false;
 
-  const ref = FirebaseRef.child(`users/${UID}`);
+  const ref = FirebaseRef.doc(`users/${UID}`);
 
   return ref.on('value', (snapshot) => {
     const userData = snapshot.val() || [];
@@ -108,9 +108,10 @@ export function login(formData) {
           .then(async (res) => {
             if (res && res.uid) {
               // Update last logged in data
-              FirebaseRef.child(`users/${res.uid}`).update({
-                lastLoggedIn: Firebase.database.ServerValue.TIMESTAMP,
-              });
+
+              /*FirebaseRef.doc(`users/${res.uid}`).set({
+                lastLoggedIn: firebase.firestore.FieldValue.serverTimestamp(),
+              }, { merge: true });8*/
 
               // Send verification Email when email hasn't been verified
               if (res.emailVerified === false) {
@@ -188,7 +189,7 @@ export function updateProfile(formData) {
     await statusMessage(dispatch, 'loading', true);
 
     // Go to Firebase
-    return FirebaseRef.child(`users/${UID}`).update({ firstName, lastName })
+    return FirebaseRef.doc(`users/${UID}`).set({ firstName, lastName }, { merge: true })
       .then(async () => {
         // Update Email address
         if (changeEmail) {
