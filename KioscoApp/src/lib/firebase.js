@@ -1,12 +1,15 @@
+
 import * as FirebaseModule from 'firebase';
+// Required for side-effects
+require("firebase/firestore");
 import firebaseConfig from '../constants/firebase';
 
 const {
   apiKey,
   authDomain,
-  databaseURL,
   storageBucket,
   messagingSenderId,
+  projectId,
 } = firebaseConfig;
 
 let firebaseInitialized = false;
@@ -14,20 +17,20 @@ let firebaseInitialized = false;
 if (
   apiKey !== 'null' &&
   authDomain !== 'null' &&
-  databaseURL !== 'null' &&
   storageBucket !== 'null' &&
-  messagingSenderId !== 'null'
+  messagingSenderId !== 'null' &&
+  projectId !== 'null'
 ) {
   FirebaseModule.initializeApp({
     apiKey,
     authDomain,
-    databaseURL,
     storageBucket,
     messagingSenderId,
+    projectId,
   });
 
   firebaseInitialized = true;
 }
 
-export const FirebaseRef = firebaseInitialized ? FirebaseModule.database().ref() : null;
+export const FirebaseRef = firebaseInitialized ? FirebaseModule.firestore() : null;
 export const Firebase = firebaseInitialized ? FirebaseModule : null;

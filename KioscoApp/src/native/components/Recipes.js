@@ -11,7 +11,7 @@ import Spacer from './Spacer';
 const RecipeListing = ({
   error,
   loading,
-  recipes,
+  products,
   reFetch,
 }) => {
   // Loading
@@ -28,13 +28,13 @@ const RecipeListing = ({
     <Container>
       <Content padder>
         <Header
-          title="Top Recipes"
+          title="Productos"
           content="This is here to show how you can read and display data from a data source (in our case, Firebase)."
         />
 
         <FlatList
           numColumns={2}
-          data={recipes}
+          data={products}
           renderItem={({ item }) => (
             <Card transparent style={{ paddingHorizontal: 6 }}>
               <CardItem cardBody>
@@ -53,7 +53,7 @@ const RecipeListing = ({
               <CardItem cardBody>
                 <Body>
                   <Spacer size={10} />
-                  <Text style={{ fontWeight: '800' }}>{item.title}</Text>
+                  <Text style={{ fontWeight: '800' }}>{item.name}</Text>
                   <Spacer size={15} />
                   <Button
                     block
@@ -61,7 +61,7 @@ const RecipeListing = ({
                     small
                     onPress={() => onPress(item)}
                   >
-                    <Text>View Recipe</Text>
+                    <Text>Comprar</Text>
                   </Button>
                   <Spacer size={5} />
                 </Body>
@@ -86,7 +86,7 @@ const RecipeListing = ({
 RecipeListing.propTypes = {
   error: PropTypes.string,
   loading: PropTypes.bool.isRequired,
-  recipes: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  products: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   reFetch: PropTypes.func,
 };
 

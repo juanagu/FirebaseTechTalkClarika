@@ -2,21 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { getRecipes, getMeals, setError } from '../actions/recipes';
+import { getProducts, setError } from '../actions/recipes';
 
 class RecipeListing extends Component {
   static propTypes = {
     Layout: PropTypes.func.isRequired,
-    recipes: PropTypes.shape({
+    products: PropTypes.shape({
       loading: PropTypes.bool.isRequired,
       error: PropTypes.string,
-      recipes: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+      products: PropTypes.arrayOf(PropTypes.shape()).isRequired,
     }).isRequired,
     match: PropTypes.shape({
       params: PropTypes.shape({}),
     }),
-    getRecipes: PropTypes.func.isRequired,
-    getMeals: PropTypes.func.isRequired,
+    getProducts: PropTypes.func.isRequired,
     setError: PropTypes.func.isRequired,
   }
 
@@ -24,14 +23,13 @@ class RecipeListing extends Component {
     match: null,
   }
 
-  componentDidMount = () => this.fetchRecipes();
+  componentDidMount = () => this.fetchProducts();
 
   /**
     * Fetch Data from API, saving to Redux
     */
-  fetchRecipes = () => {
-    return this.props.getRecipes()
-      .then(() => this.props.getMeals())
+  fetchProducts = () => {
+    return this.props.getProducts()
       .catch((err) => {
         console.log(`Error: ${err}`);
         return this.props.setError(err);
@@ -39,28 +37,27 @@ class RecipeListing extends Component {
   }
 
   render = () => {
-    const { Layout, recipes, match } = this.props;
+    const { Layout, products, match } = this.props;
     const id = (match && match.params && match.params.id) ? match.params.id : null;
 
     return (
       <Layout
         recipeId={id}
-        error={recipes.error}
-        loading={recipes.loading}
-        recipes={recipes.recipes}
-        reFetch={() => this.fetchRecipes()}
+        error={products.error}
+        loading={products.loading}
+        recipes={products.products}
+        reFetch={() => this.fetchProducts()}
       />
     );
   }
 }
 
 const mapStateToProps = state => ({
-  recipes: state.recipes || {},
+  products: state.products || {},
 });
 
 const mapDispatchToProps = {
-  getRecipes,
-  getMeals,
+  getProducts,
   setError,
 };
 
