@@ -5,8 +5,8 @@ import { Icon } from 'native-base';
 import DefaultProps from '../constants/navigation';
 import AppConfig from '../../constants/config';
 
-import RecipesContainer from '../../containers/Recipes';
-import RecipesComponent from '../components/Recipes';
+import ProductsContainer from '../../containers/Products';
+import ProductsComponent from '../components/Products';
 import RecipeViewComponent from '../components/Recipe';
 
 import SignUpContainer from '../../containers/SignUp';
@@ -38,12 +38,12 @@ const Index = (
         {...DefaultProps.tabProps}
       >
         <Stack
-          key="recipes"
+          key="products"
           title="PRODUCTOS"
           icon={() => <Icon name="book" {...DefaultProps.icons} />}
           {...DefaultProps.navbarProps}
         >
-          <Scene key="recipes" component={RecipesContainer} Layout={RecipesComponent} />
+          <Scene key="products" component={ProductsContainer} Layout={ProductsComponent} />
         </Stack>
 
         <Stack
@@ -103,7 +103,7 @@ const Index = (
       key="recipe"
       title="RECIPE"
       {...DefaultProps.navbarProps}
-      component={RecipesContainer}
+      component={ProductsContainer}
       Layout={RecipeViewComponent}
     />
   </Stack>

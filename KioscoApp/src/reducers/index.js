@@ -1,6 +1,6 @@
 import status from './status';
 import member from './member';
-import products from './recipes';
+import products from './products';
 import locale from './locale';
 
 const rehydrated = (state = false, action) => {

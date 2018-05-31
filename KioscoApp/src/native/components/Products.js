@@ -31,7 +31,7 @@ const RecipeListing = ({
           title="Productos"
           content="This is here to show how you can read and display data from a data source (in our case, Firebase)."
         />
-
+        
         <FlatList
           numColumns={2}
           data={products}

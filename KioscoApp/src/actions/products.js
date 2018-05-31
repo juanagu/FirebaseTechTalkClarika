@@ -1,7 +1,7 @@
 import { Firebase, FirebaseRef } from '../lib/firebase';
 
 /**
-  * Get this User's Favourite Recipes
+  * Get all products
   */
 export function getProducts() {
   if (Firebase === null) return () => new Promise(resolve => resolve());
