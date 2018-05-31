@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, TouchableOpacity, RefreshControl, Image } from 'react-native';
+import { Alert, FlatList, RefreshControl, Image } from 'react-native';
 import { Container, Content, Card, CardItem, Body, Text, Button } from 'native-base';
-import { Actions } from 'react-native-router-flux';
 import Loading from './Loading';
 import Error from './Error';
-import Header from './Header';
 import Spacer from './Spacer';
 
 const RecipeListing = ({
@@ -13,6 +11,7 @@ const RecipeListing = ({
   loading,
   products,
   reFetch,
+  buyProduct,
 }) => {
   // Loading
   if (loading) return <Loading />;
@@ -22,34 +21,27 @@ const RecipeListing = ({
 
   const keyExtractor = item => item.id;
 
-  const onPress = item => Actions.recipe({ match: { params: { id: String(item.id) } } });
+  const onPress = item => buyProduct(item).then(Alert.alert('Su compra se registro correctamente'));
 
   return (
     <Container>
       <Content padder>
-        <Header
-          title="Productos"
-          content="This is here to show how you can read and display data from a data source (in our case, Firebase)."
-        />
-        
         <FlatList
           numColumns={2}
           data={products}
           renderItem={({ item }) => (
             <Card transparent style={{ paddingHorizontal: 6 }}>
               <CardItem cardBody>
-                <TouchableOpacity onPress={() => onPress(item)} style={{ flex: 1 }}>
-                  <Image
-                    source={{ uri: item.image }}
-                    resizeMode="contain"
-                    style={{
-                      height: 100,
-                      width: null,
-                      flex: 1,
-                      borderRadius: 5,
-                    }}
-                  />
-                </TouchableOpacity>
+                <Image
+                  source={{ uri: item.image }}
+                  resizeMode="contain"
+                  style={{
+                    height: 100,
+                    width: null,
+                    flex: 1,
+                    borderRadius: 5,
+                  }}
+                />
               </CardItem>
               <CardItem cardBody>
                 <Body>
@@ -89,11 +81,13 @@ RecipeListing.propTypes = {
   loading: PropTypes.bool.isRequired,
   products: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   reFetch: PropTypes.func,
+  buyProduct: PropTypes.func,
 };
 
 RecipeListing.defaultProps = {
   error: null,
   reFetch: null,
+  buyProduct: null,
 };
 
 export default RecipeListing;

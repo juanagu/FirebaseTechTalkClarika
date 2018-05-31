@@ -31,12 +31,14 @@ export function signUp(formData) {
       .then((res) => {
         // Send user details to Firebase database
         if (res && res.uid) {
-          FirebaseRef.child(`users/${res.uid}`).set({
-            firstName,
-            lastName,
-            signedUp: Firebase.database.ServerValue.TIMESTAMP,
-            lastLoggedIn: Firebase.database.ServerValue.TIMESTAMP,
-          }).then(() => statusMessage(dispatch, 'loading', false).then(resolve));
+          FirebaseRef.collection('users')
+            .doc(res.uid)
+            .set({
+              firstName,
+              lastName,
+              signedUp: Firebase.firestore.FieldValue.serverTimestamp(),
+              lastLoggedIn: Firebase.firestore.FieldValue.serverTimestamp(),
+            }).then(() => statusMessage(dispatch, 'loading', false).then(resolve));
         }
       }).catch(reject);
   }).catch(async (err) => { await statusMessage(dispatch, 'error', err.message); throw err.message; });
@@ -56,16 +58,15 @@ function getUserData(dispatch) {
 
   if (!UID) return false;
 
-  const ref = FirebaseRef.child(`users/${UID}`);
-
-  return ref.on('value', (snapshot) => {
-    const userData = snapshot.val() || [];
-
-    return dispatch({
-      type: 'USER_DETAILS_UPDATE',
-      data: userData,
+  return FirebaseRef.collection('users')
+    .doc(UID)
+    .get().then((doc) => {
+      const userData = doc.data() || [];
+      return dispatch({
+        type: 'USER_DETAILS_UPDATE',
+        data: userData,
+      });
     });
-  });
 }
 
 export function getMemberData() {
@@ -108,9 +109,9 @@ export function login(formData) {
           .then(async (res) => {
             if (res && res.uid) {
               // Update last logged in data
-              FirebaseRef.child(`users/${res.uid}`).update({
-                lastLoggedIn: Firebase.database.ServerValue.TIMESTAMP,
-              });
+              FirebaseRef.collection('users').doc(res.uid).set({
+                lastLoggedIn: Firebase.firestore.FieldValue.serverTimestamp(),
+              }, { merge: true });
 
               // Send verification Email when email hasn't been verified
               if (res.emailVerified === false) {

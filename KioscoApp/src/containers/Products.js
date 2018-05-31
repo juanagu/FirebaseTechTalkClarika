@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { getProducts, setError } from '../actions/products';
+import { getProducts, setError, buyProduct } from '../actions/products';
 
 class RecipeListing extends Component {
   static propTypes = {
@@ -16,6 +16,7 @@ class RecipeListing extends Component {
       params: PropTypes.shape({}),
     }),
     getProducts: PropTypes.func.isRequired,
+    buyProduct: PropTypes.func.isRequired,
     setError: PropTypes.func.isRequired,
   }
 
@@ -36,6 +37,13 @@ class RecipeListing extends Component {
       });
   }
 
+  buyProduct = (product) => {
+    return this.props.buyProduct(product).catch((err) => {
+      console.log(`Error: ${err}`);
+      return this.props.setError(err);
+    });
+  }
+
   render = () => {
     const { Layout, products, match } = this.props;
     const id = (match && match.params && match.params.id) ? match.params.id : null;
@@ -47,6 +55,7 @@ class RecipeListing extends Component {
         loading={products.loading}
         products={products.products}
         reFetch={() => this.fetchProducts()}
+        buyProduct={(product) => this.buyProduct(product)}
       />
     );
   }
@@ -59,6 +68,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   getProducts,
   setError,
+  buyProduct,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipeListing);
