@@ -3,19 +3,22 @@ import { Firebase, FirebaseRef } from '../lib/firebase';
 /**
   * Get this User's Favourite Recipes
   */
-export function getProducts(dispatch) {
+export function getProducts() {
   if (Firebase === null) return () => new Promise(resolve => resolve());
 
-  const ref = FirebaseRef.collection('products');
+  return dispatch => new Promise((resolve, reject) => FirebaseRef
+    .collection('products')
+    .onSnapshot((querySnapshot) => {
+      const products = [];
+      querySnapshot.forEach(function(doc) {
+        products.push(doc.data());
+      });
 
-  return ref.on('value', (snapshot) => {
-    const products = snapshot.val() || [];
-
-    return dispatch({
-      type: 'PRODUCTS_REFRESH',
-      data: products,
-    });
-  });
+      return dispatch({
+        type: 'PRODUCTS_REFRESH',
+        data: products,
+      });
+    }).catch(reject)).catch(e => console.log(e));
 }
 
 /**

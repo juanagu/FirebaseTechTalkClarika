@@ -45,7 +45,7 @@ class RecipeListing extends Component {
         recipeId={id}
         error={products.error}
         loading={products.loading}
-        recipes={products.products}
+        products={products.products}
         reFetch={() => this.fetchProducts()}
       />
     );

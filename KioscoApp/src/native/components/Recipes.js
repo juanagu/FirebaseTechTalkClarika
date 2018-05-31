@@ -41,6 +41,7 @@ const RecipeListing = ({
                 <TouchableOpacity onPress={() => onPress(item)} style={{ flex: 1 }}>
                   <Image
                     source={{ uri: item.image }}
+                    resizeMode="contain"
                     style={{
                       height: 100,
                       width: null,
@@ -61,7 +62,7 @@ const RecipeListing = ({
                     small
                     onPress={() => onPress(item)}
                   >
-                    <Text>Comprar</Text>
+                    <Text>Comprar ${item.price}</Text>
                   </Button>
                   <Spacer size={5} />
                 </Body>

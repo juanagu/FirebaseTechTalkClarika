@@ -32,5 +32,10 @@ if (
   firebaseInitialized = true;
 }
 
-export const FirebaseRef = firebaseInitialized ? FirebaseModule.firestore() : null;
+const settings = { timestampsInSnapshots: true };
+
+
+const firestore = firebaseInitialized ? FirebaseModule.firestore() : null;
+firestore.settings(settings);
+export const FirebaseRef = firestore;
 export const Firebase = firebaseInitialized ? FirebaseModule : null;

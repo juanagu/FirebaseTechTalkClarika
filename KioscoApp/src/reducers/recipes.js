@@ -17,7 +17,7 @@ export default function recipeReducer(state = initialState, action) {
       if (action.data && typeof action.data === 'object') {
         products = action.data.map(item => ({
           id: item.id,
-          title: item.name,
+          name: item.name,
           image: item.image,
           price: item.price,
         }));
