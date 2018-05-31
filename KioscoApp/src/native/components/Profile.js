@@ -17,15 +17,6 @@ const Profile = ({ member, logout }) => (
                 content={`You are currently logged in as ${member.email}`}
               />
             </Content>
-
-            <ListItem onPress={Actions.updateProfile} icon>
-              <Left>
-                <Icon name="person-add" />
-              </Left>
-              <Body>
-                <Text>Update My Profile</Text>
-              </Body>
-            </ListItem>
             <ListItem onPress={logout} icon>
               <Left>
                 <Icon name="power" />
@@ -60,24 +51,8 @@ const Profile = ({ member, logout }) => (
                 <Text>Sign Up</Text>
               </Body>
             </ListItem>
-            <ListItem onPress={Actions.forgotPassword} icon>
-              <Left>
-                <Icon name="help-buoy" />
-              </Left>
-              <Body>
-                <Text>Forgot Password</Text>
-              </Body>
-            </ListItem>
           </View>
         }
-        <ListItem onPress={Actions.locale} icon>
-          <Left>
-            <Icon name="ios-flag" />
-          </Left>
-          <Body>
-            <Text>Change Language</Text>
-          </Body>
-        </ListItem>
       </List>
     </Content>
   </Container>
